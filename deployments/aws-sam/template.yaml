@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Room Heat Map
+
+Resources:
+  RenderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: go1.x
+      CodeUri: ../../cmd/render
+      Handler: main
+      Timeout: 30
+      Events:
+        RenderEvent:
+          Type: HttpApi
+          Properties:
+            Method: GET
+            Path: "/render/{data}"
+
+Outputs:
+  API:
+    Description: "API Gateway Endpoint URL for Heat Map"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
